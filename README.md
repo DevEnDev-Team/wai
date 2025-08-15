@@ -1,4 +1,4 @@
-# 🚀 Web App Installer pour Linux
+# 🚀 WAI (Web App Installer pour Linux)
 
 Un script Bash interactif pour transformer vos applications web préférées en applications natives Linux avec Chrome/Chromium.
 
