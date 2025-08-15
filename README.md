@@ -61,7 +61,7 @@ sudo pacman -S chromium wget
 ### Téléchargement direct
 ```bash
 # Télécharger le script
-wget https://raw.githubusercontent.com/votre-repo/web-app-installer/main/install_apps.sh
+wget https://raw.githubusercontent.com/DevEnDev-Team/wai/main/install_apps.sh
 
 # Rendre exécutable
 chmod +x install_apps.sh
@@ -72,7 +72,7 @@ chmod +x install_apps.sh
 
 ### Clone du repository
 ```bash
-git clone https://github.com/votre-repo/web-app-installer.git
+git clone https://github.com/DevEnDev-Team/wai.git
 cd web-app-installer
 chmod +x install_apps.sh
 ./install_apps.sh
@@ -279,9 +279,9 @@ Les contributions sont les bienvenues !
 
 ## 📞 Support
 
-- 🐛 **Issues** : [GitHub Issues](https://github.com/votre-repo/web-app-installer/issues)
-- 💬 **Discussions** : [GitHub Discussions](https://github.com/votre-repo/web-app-installer/discussions)
-- 📧 **Email** : support@votre-email.com
+- 🐛 **Issues** : [GitHub Issues](https://github.com/DevEnDev-Team/wai/issues)
+- 💬 **Discussions** : [GitHub Discussions](https://github.com/DevEnDev-Team/wai/discussions)
+- 📧 **Email** : devendev.pro@gmail.com
 
 ## 🙏 Remerciements
 
