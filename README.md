@@ -61,28 +61,28 @@ sudo pacman -S chromium wget
 ### Téléchargement direct
 ```bash
 # Télécharger le script
-wget https://raw.githubusercontent.com/DevEnDev-Team/wai/main/install_apps.sh
+wget https://raw.githubusercontent.com/DevEnDev-Team/wai/main/install_dev_tools.sh
 
 # Rendre exécutable
-chmod +x install_apps.sh
+chmod +x install_dev_tools.sh
 
 # Lancer le script
-./install_apps.sh
+./install_dev_tools.sh
 ```
 
 ### Clone du repository
 ```bash
 git clone https://github.com/DevEnDev-Team/wai.git
 cd web-app-installer
-chmod +x install_apps.sh
-./install_apps.sh
+chmod +x install_dev_tools.sh
+./install_dev_tools.sh
 ```
 
 ## 🎯 Utilisation
 
 ### Lancement du script
 ```bash
-./install_apps.sh
+./install_dev_tools.sh
 ```
 
 ### Interface principale
