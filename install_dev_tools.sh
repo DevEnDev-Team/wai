@@ -27,6 +27,12 @@ APPS[notion_url]="https://www.notion.so/"
 APPS[notion_icon]="https://img.icons8.com/?size=100&id=wue74HqaylSJ&format=png&color=000000"
 APPS[notion_category]="Office;Productivity;TextEditor;"
 
+APPS[github_name]="Github"
+APPS[github_url]="https://github.com/"
+APPS[github_icon]="https://img.icons8.com/?size=100&id=52539&format=png&color=000000"
+APPS[github_category]="Development;VersionControl;Collaboration;"
+
+
 WINDOW_SIZE="1200x800"
 
 # Fonction d'installation
@@ -246,7 +252,7 @@ list_installed_apps() {
     echo "Applications installées :"
     installed_count=0
     
-    for app_key in trello chatgpt claude notion; do
+    for app_key in trello chatgpt claude notion github; do
         app_name="${APPS[${app_key}_name]}"
         app_dir="/opt/$app_name"
         display_name="$app_name"
@@ -275,10 +281,11 @@ select_app() {
     echo "2. ChatGPT"
     echo "3. Claude AI"
     echo "4. Notion"
-    echo "5. Retour au menu principal"
+    echo "5. Github"
+    echo "6. Retour au menu principal"
     echo
     
-    read -p "Votre choix (1-5): " -n 1 -r
+    read -p "Votre choix (1-6): " -n 1 -r
     echo
     
     case $REPLY in
@@ -311,6 +318,13 @@ select_app() {
             fi
             ;;
         5)
+            if [ "$action" = "Installer" ]; then
+                install_app "github"
+            else
+                uninstall_app "github"
+            fi
+            ;;
+        6)
             return
             ;;
         *)
