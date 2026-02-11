@@ -111,15 +111,16 @@ install_app() {
     fi
     
     echo "3. Création du script de lancement..."
-    sudo tee "$script_path" > /dev/null <<EOF
+sudo tee "$script_path" > /dev/null <<EOF
 #!/bin/bash
 $chrome_cmd --app=$app_url \\
-  --user-data-dir=/home/\$USER/.config/${app_name_lower}-profile \\
+  --user-data-dir="\$HOME/.config/${app_name_lower}-profile" \\
   --disable-features=VizDisplayCompositor \\
-  --class="$display_name" \\
+  --class="${app_name_lower}-app" \\
   --name="$display_name" \\
   --window-size=$WINDOW_SIZE
 EOF
+
     
     sudo chmod +x "$script_path"
     echo "    ✓ Script créé: $script_path"
