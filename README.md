@@ -14,6 +14,7 @@ Un script Bash interactif pour transformer vos applications web préférées en 
 - **Profils Chrome isolés** pour chaque application
 - **Icônes haute qualité** téléchargées automatiquement
 - **Intégration système** complète (menu d'applications, lanceurs)
+- **Gestion des Alias** : Créez et gérez vos raccourcis terminal directement
 - **Support multi-distribution** Linux
 
 ## 📱 Applications supportées
@@ -24,6 +25,8 @@ Un script Bash interactif pour transformer vos applications web préférées en 
 | 🤖 **ChatGPT** | Assistant IA d'OpenAI | https://chatgpt.com/ |
 | 🧠 **Claude AI** | Assistant IA d'Anthropic | https://claude.ai/ |
 | 📝 **Notion** | Prise de notes et productivité | https://www.notion.so/ |
+| 🐙 **Github** | Plateforme de développement et Git | https://github.com/ |
+| ✨ **Gemini** | Intelligence artificielle de Google | https://gemini.google.com/ |
 
 ## 🔧 Prérequis
 
@@ -95,9 +98,10 @@ Applications installées :
 
 1. Installer une application
 2. Désinstaller une application
-3. Quitter
+3. Configuration & Alias
+4. Quitter
 
-Votre choix (1-3):
+Votre choix (1-4):
 ```
 
 ### Installation d'une application
@@ -107,8 +111,18 @@ Votre choix (1-3):
    - Crée le dossier `/opt/AppName/`
    - Télécharge l'icône officielle
    - Génère le script de lancement
-   - Crée l'entrée de menu `.desktop`
+   - Crée l'entrée de menu `.desktop` (système)
    - Met à jour les caches système
+
+### Gestion des Alias & Config
+1. Choisissez **"3. Configuration & Alias"**
+2. Depuis ce menu vous pouvez :
+   - Voir le chemin d'installation des apps
+   - Visualiser tous vos alias (Bash & personnalisés)
+   - **Ajouter** de nouveaux alias (commandes ou dossiers)
+   - **Modifier** des alias existants (avec migration automatique depuis `.bashrc`)
+   - **Supprimer** des alias proprement
+   - Configurer automatiquement votre système pour charger les alias via `.bash_aliases`
 
 ### Désinstallation
 1. Choisissez **"2. Désinstaller une application"**
@@ -129,10 +143,7 @@ Chaque application installée génère cette structure :
 └── appname.png         # Icône de l'application
 
 /usr/share/applications/
-└── appname.desktop     # Entrée du menu système
-
-~/.local/share/applications/
-└── appname.desktop     # Entrée du menu utilisateur
+└── appname.desktop     # Entrée du menu système (tous utilisateurs)
 
 ~/.config/appname-profile/
 └── [Profil Chrome dédié]
@@ -150,8 +161,9 @@ Les applications sont lancées avec ces options :
 
 ### Catégories d'applications
 - **Trello** : `Office;ProjectManagement;Productivity;`
-- **ChatGPT/Claude** : `Network;Chat;Office;`
+- **ChatGPT/Claude/Gemini** : `Network;Chat;Office;AI;`
 - **Notion** : `Office;Productivity;TextEditor;`
+- **Github** : `Development;VersionControl;Collaboration;`
 
 ## 🔍 Dépannage
 

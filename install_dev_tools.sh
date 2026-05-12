@@ -55,7 +55,6 @@ install_app() {
     local script_path="$app_dir/${app_name_lower}.sh"
     local icon_path="$app_dir/${app_name_lower}.png"
     local desktop_file="/usr/share/applications/${app_name_lower}.desktop"
-    local user_desktop_file="$HOME/.local/share/applications/${app_name_lower}.desktop"
     local profile_dir="$HOME/.config/${app_name_lower}-profile"
     
     # Nom d'affichage (avec espace si nécessaire)
@@ -146,13 +145,6 @@ EOF"
     
     echo "5. Mise à jour du cache des applications..."
     sudo update-desktop-database 2>/dev/null || true
-    
-    # Copie dans le dossier utilisateur
-    if [ -d "$HOME/.local/share/applications" ]; then
-        cp "$desktop_file" "$HOME/.local/share/applications/"
-        update-desktop-database "$HOME/.local/share/applications/" 2>/dev/null || true
-        echo "    ✓ Copié dans le profil utilisateur"
-    fi
     
     # Mise à jour du cache des icônes
     if command -v gtk-update-icon-cache &> /dev/null; then
@@ -337,6 +329,120 @@ select_app() {
     fi
 }
 
+# Fonction pour gérer la configuration et les alias
+manage_config() {
+    local alias_file="$HOME/.bash_aliases"
+    local bashrc_file="$HOME/.bashrc"
+    
+    while true; do
+        clear
+        echo "=== Configuration & Alias ==="
+        echo
+        echo "Informations système :"
+        echo "  📂 Applications : /opt/"
+        echo "  📄 Fichier principal : $alias_file"
+        echo
+        echo "--- Alias détectés ---"
+        # On liste les alias de .bash_aliases et les alias personnalisés de .bashrc
+        if [ -f "$alias_file" ]; then
+            grep "^alias " "$alias_file" | cut -d' ' -f2- || true
+        fi
+        # On cherche aussi dans .bashrc mais on filtre les alias système classiques
+        grep "^alias " "$bashrc_file" | grep -vE "ls=|grep=|ll=|la=|l=|alert=" | cut -d' ' -f2- || true
+        echo "----------------------"
+        echo
+        echo "1. Ajouter un alias"
+        echo "2. Modifier un alias"
+        echo "3. Supprimer un alias"
+        echo "4. Re-scanner / Voir tout"
+        echo "5. Retour au menu principal"
+        echo
+        
+        read -p "Votre choix (1-5): " -n 1 -r
+        echo
+        echo
+        
+        case $REPLY in
+            1)
+                read -p "Nom de l'alias (ex: util) : " alias_name
+                read -p "Commande ou Dossier (ex: cd ~/Documents) : " alias_cmd
+                if [ -n "$alias_name" ] && [ -n "$alias_cmd" ]; then
+                    [ -f "$alias_file" ] || touch "$alias_file"
+                    [ -n "$(tail -c1 "$alias_file" 2>/dev/null)" ] && echo "" >> "$alias_file"
+                    echo "alias $alias_name='$alias_cmd'" >> "$alias_file"
+                    echo "✓ Alias ajouté dans $alias_file"
+                    
+                    if ! grep -q "test -f ~/.bash_aliases" "$bashrc_file"; then
+                        echo -e "\n# Alias personnels\nif [ -f ~/.bash_aliases ]; then\n    . ~/.bash_aliases\nfi" >> "$bashrc_file"
+                    fi
+                fi
+                sleep 2
+                ;;
+            2)
+                read -p "Nom de l'alias à modifier : " alias_name
+                if [ -n "$alias_name" ]; then
+                    # Vérifier si l'alias est dans .bashrc mais pas dans .bash_aliases
+                    if grep -q "^alias $alias_name=" "$bashrc_file" && ! grep -q "^alias $alias_name=" "$alias_file"; then
+                        echo "L'alias '$alias_name' a été détecté dans votre .bashrc."
+                        read -p "Voulez-vous le migrer vers le fichier de config pour pouvoir le modifier ? (y/N) : " -n 1 -r
+                        echo
+                        if [[ $REPLY =~ ^[Yy]$ ]]; then
+                            # Extraire l'ancienne commande proprement
+                            old_line=$(grep "^alias $alias_name=" "$bashrc_file" | head -n 1)
+                            # Supprimer du .bashrc
+                            sed -i "/^alias $alias_name=/d" "$bashrc_file"
+                            # Ajouter au .bash_aliases
+                            echo "$old_line" >> "$alias_file"
+                            echo "✓ Alias migré."
+                        fi
+                    fi
+                    
+                    if grep -q "^alias $alias_name=" "$alias_file"; then
+                        echo "Alias actuel : $(grep "^alias $alias_name=" "$alias_file" | cut -d"'" -f2)"
+                        read -p "Nouvelle commande/dossier : " new_cmd
+                        if [ -n "$new_cmd" ]; then
+                            # On supprime l'ancien et on ajoute le nouveau pour éviter les soucis de 'sed' avec les caractères spéciaux comme '&'
+                            sed -i "/^alias $alias_name=/d" "$alias_file"
+                            echo "alias $alias_name='$new_cmd'" >> "$alias_file"
+                            echo "✓ Alias '$alias_name' mis à jour."
+                        fi
+                    else
+                        echo "L'alias '$alias_name' n'est pas géré par ce script (il doit être dans .bash_aliases ou être migré)."
+                    fi
+                fi
+                sleep 2
+                ;;
+            3)
+                read -p "Nom de l'alias à supprimer : " alias_to_del
+                if [ -n "$alias_to_del" ]; then
+                    if grep -q "alias $alias_to_del=" "$alias_file"; then
+                        sed -i "/alias $alias_to_del=/d" "$alias_file"
+                        echo "✓ Alias '$alias_to_del' supprimé de $alias_file."
+                    elif grep -q "alias $alias_to_del=" "$bashrc_file"; then
+                        echo "Cet alias est dans votre .bashrc."
+                        read -p "Voulez-vous le supprimer de votre .bashrc ? (y/N) : " -n 1 -r
+                        echo
+                        if [[ $REPLY =~ ^[Yy]$ ]]; then
+                            sed -i "/alias $alias_to_del=/d" "$bashrc_file"
+                            echo "✓ Supprimé du .bashrc."
+                        fi
+                    else
+                        echo "Alias non trouvé."
+                    fi
+                fi
+                sleep 2
+                ;;
+            4)
+                echo "Re-scan en cours..."
+                sleep 1
+                ;;
+            5)
+                return
+                ;;
+        esac
+    done
+}
+
 # Menu principal
 while true; do
     echo "=== Gestionnaire d'applications web ==="
@@ -344,10 +450,11 @@ while true; do
     list_installed_apps
     echo "1. Installer une application"
     echo "2. Désinstaller une application"
-    echo "3. Quitter"
+    echo "3. Configuration & Alias"
+    echo "4. Quitter"
     echo
     
-    read -p "Votre choix (1-3): " -n 1 -r
+    read -p "Votre choix (1-4): " -n 1 -r
     echo
     
     case $REPLY in
@@ -358,6 +465,9 @@ while true; do
             select_app "Désinstaller"
             ;;
         3)
+            manage_config
+            ;;
+        4)
             echo "Au revoir !"
             exit 0
             ;;
