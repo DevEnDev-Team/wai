@@ -27,6 +27,7 @@ Un script Bash interactif pour transformer vos applications web préférées en 
 | 📝 **Notion** | Prise de notes et productivité | https://www.notion.so/ |
 | 🐙 **Github** | Plateforme de développement et Git | https://github.com/ |
 | ✨ **Gemini** | Intelligence artificielle de Google | https://gemini.google.com/ |
+| 🐧 **Tux-It** | Application de notes adhésives (Qt6) compiles nativement | *Repo Git* |
 
 ## 🔧 Prérequis
 
@@ -164,6 +165,7 @@ Les applications sont lancées avec ces options :
 - **ChatGPT/Claude/Gemini** : `Network;Chat;Office;AI;`
 - **Notion** : `Office;Productivity;TextEditor;`
 - **Github** : `Development;VersionControl;Collaboration;`
+- **Tux-It** : `Utility;Office;` (compilé nativement)
 
 ## 🔍 Dépannage
 
