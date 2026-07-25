@@ -2,6 +2,7 @@
 name = "wai-cli"
 version = "0.1.0"
 edition = "2024"
+description = "Web App Installer for Linux - transform web apps into native desktop applications"
 
 [dependencies]
 dialoguer = "0.10"
@@ -20,4 +21,3 @@ assets = [
     ["../target/release/wai-runner", "usr/bin/wai-runner", "755"]
 ]
 depends = "libwebkit2gtk-4.1-0, libgtk-3-0, libsoup-3.0-0, libssl3, libayatana-appindicator3-1, librsvg2-common"
-description = "Web App Installer for Linux - transform web apps into native desktop applications"
