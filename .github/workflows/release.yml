@@ -1,0 +1,70 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    name: Build and Release
+    runs-on: ubuntu-22.04 # Use 22.04 for maximum GLIBC backward compatibility on older Linux distros
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libsoup-3.0-dev \
+            libwebkit2gtk-4.1-dev \
+            libgtk-3-dev \
+            build-essential \
+            curl \
+            wget \
+            file \
+            libssl-dev \
+            libayatana-appindicator3-dev \
+            librsvg2-dev \
+            pkg-config
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Rust Cache
+        uses: swatinem/rust-cache@v2
+
+      - name: Install cargo-deb (pre-compiled binary)
+        run: |
+          wget https://github.com/mmstick/cargo-deb/releases/download/v2.10.0/cargo-deb_2.10.0_amd64.deb
+          sudo dpkg -i cargo-deb_2.10.0_amd64.deb
+          rm cargo-deb_2.10.0_amd64.deb
+
+      - name: Build release binaries
+        run: cargo build --release
+
+      - name: Create Debian Package
+        run: |
+          cd wai-cli
+          cargo deb --no-build
+
+      - name: Prepare release assets
+        run: |
+          mkdir -p release-assets
+          cp target/release/wai-cli release-assets/wai
+          cp target/release/wai-runner release-assets/wai-runner
+          cp target/debian/wai_*.deb release-assets/
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            release-assets/wai
+            release-assets/wai-runner
+            release-assets/wai_*.deb
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

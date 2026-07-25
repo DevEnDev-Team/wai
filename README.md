@@ -61,75 +61,62 @@ sudo pacman -S rust webkit2gtk-4.1 gtk3 wget
 
 ### Téléchargement direct
 ```bash
-# Télécharger le script
-wget https://raw.githubusercontent.com/DevEnDev-Team/wai/main/install_dev_tools.sh
+### Méthode 1 : Paquet Debian (Recommandée pour Ubuntu/Debian/Pop!_OS)
+1. Téléchargez le dernier paquet `.deb` depuis la page des [Releases GitHub](https://github.com/DevEnDev-Team/wai/releases).
+2. Installez-le avec votre gestionnaire de paquets favori :
+   ```bash
+   sudo apt install ./wai_*.deb
+   ```
 
-# Rendre exécutable
-chmod +x install_dev_tools.sh
-
-# Lancer le script
-./install_dev_tools.sh
-```
-
-### Clone du repository
-```bash
-git clone https://github.com/DevEnDev-Team/wai.git
-cd web-app-installer
-chmod +x install_dev_tools.sh
-./install_dev_tools.sh
-```
+### Méthode 2 : Compilation à partir des sources (Toutes distributions)
+1. Clonez le repository et accédez-y :
+   ```bash
+   git clone https://github.com/DevEnDev-Team/wai.git
+   cd wai
+   ```
+2. Compilez le projet Workspace Rust :
+   ```bash
+   cargo build --release
+   ```
+3. Installez le binaire de la CLI dans vos exécutables utilisateur :
+   ```bash
+   cp target/release/wai-cli ~/.local/bin/wai
+   ```
+   *(Assurez-vous que `~/.local/bin` est présent dans votre `$PATH`).*
 
 ## 🎯 Utilisation
 
-### Lancement du script
+### Lancement de l'outil
+Ouvrez simplement votre terminal et lancez la commande :
 ```bash
-./install_dev_tools.sh
+wai
 ```
 
-### Interface principale
-```
-=== Gestionnaire d'applications web ===
-
-Applications installées :
-  ✓ Trello
-  ✓ ChatGPT
-
-1. Installer une application
-2. Désinstaller une application
-3. Configuration & Alias
-4. Quitter
-
-Votre choix (1-4):
-```
+### Interface TUI Interactive
+L'interface en ligne de commande (TUI) est entièrement interactive et se pilote au clavier :
+- Utilisez les flèches du clavier **Haut/Bas** ⬆️ ⬇️ pour naviguer dans les options.
+- Appuyez sur **Entrée** pour valider vos choix.
 
 ### Installation d'une application
-1. Choisissez **"1. Installer une application"**
-2. Sélectionnez l'application désirée
-3. Le script :
-   - Crée le dossier `/opt/AppName/`
-   - Télécharge l'icône officielle
-   - Génère le script de lancement
-   - Crée l'entrée de menu `.desktop` (système)
-   - Met à jour les caches système
+1. Choisissez **"Installer une application"** dans le menu principal.
+2. Naviguez vers l'application de votre choix.
+3. WAI s'occupe de tout :
+   - Télécharge l'icône haute qualité au format PNG.
+   - Génère une entrée de bureau `.desktop` dans `~/.local/share/applications/` pour l'intégrer à votre menu d'applications système.
+   - Initialise une session isolée pour votre application.
+   - *(Si vous compilez manuellement)* WAI s'occupe de compiler automatiquement le runner Tauri la première fois.
 
 ### Gestion des Alias & Config
-1. Choisissez **"3. Configuration & Alias"**
-2. Depuis ce menu vous pouvez :
-   - Voir le chemin d'installation des apps
-   - Visualiser tous vos alias (Bash & personnalisés)
-   - **Ajouter** de nouveaux alias (commandes ou dossiers)
-   - **Modifier** des alias existants (avec migration automatique depuis `.bashrc`)
-   - **Supprimer** des alias proprement
-   - Configurer automatiquement votre système pour charger les alias via `.bash_aliases`
+Depuis le menu **"Configuration & Alias"**, vous pouvez :
+- Visualiser tous vos alias personnalisés (détectés dans `~/.bash_aliases` et `~/.bashrc`).
+- **Ajouter** de nouveaux alias instantanément.
+- **Modifier** des alias existants (avec détection intelligente dans `.bashrc` et transfert sécurisé).
+- **Supprimer** des alias proprement sans risque pour votre système.
 
 ### Désinstallation
-1. Choisissez **"2. Désinstaller une application"**
-2. Sélectionnez l'application à supprimer
-3. Confirmez la suppression
-4. Le script supprime complètement :
-   - Dossier d'application
-   - Fichiers de menu
-   - Profil Chrome dédié
+1. Choisissez **"Désinstaller une application"** dans le menu principal.
+2. Sélectionnez l'application à supprimer.
+3. Validez la confirmation. Tout est nettoyé proprement sans laisser de résidus (fichiers desktop, icônes, dossiers de sessions et de cookies).
 
 ## 📁 Structure créée
 

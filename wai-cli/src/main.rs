@@ -107,6 +107,13 @@ fn check_is_installed(app: &AppConfig) -> bool {
 // --- Gestion des dépendances & Compilation du Runner ---
 
 fn ensure_runner_compiled() -> io::Result<PathBuf> {
+    // 1. Vérifier si installé globalement (cas du paquet .deb)
+    let global_runner = PathBuf::from("/usr/bin/wai-runner");
+    if global_runner.exists() {
+        return Ok(global_runner);
+    }
+
+    // 2. Vérifier dans ~/.local/bin/ (compilation locale)
     let mut runner_bin = dirs::home_dir().unwrap_or_default();
     runner_bin.push(".local/bin/wai-runner");
 
