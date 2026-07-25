@@ -94,10 +94,15 @@ fn main() {
                 builder = builder.data_directory(path.clone());
             }
 
-            let window = builder.build().expect("failed to build window");
+            let _window = builder.build().expect("failed to build window");
             
+            #[cfg(any(debug_assertions, feature = "devtools"))]
             if enable_devtools {
-                window.open_devtools();
+                _window.open_devtools();
+            }
+            #[cfg(not(any(debug_assertions, feature = "devtools")))]
+            if enable_devtools {
+                eprintln!("Warning: DevTools are disabled in this build of wai-runner");
             }
 
             Ok(())

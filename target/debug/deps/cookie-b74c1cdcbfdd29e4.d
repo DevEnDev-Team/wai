@@ -1,0 +1,12 @@
+/home/mangoz404/Documents/Projets/Shell/wai/target/debug/deps/cookie-b74c1cdcbfdd29e4.d: /home/mangoz404/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cookie-0.18.1/src/lib.rs /home/mangoz404/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cookie-0.18.1/src/builder.rs /home/mangoz404/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cookie-0.18.1/src/parse.rs /home/mangoz404/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cookie-0.18.1/src/jar.rs /home/mangoz404/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cookie-0.18.1/src/delta.rs /home/mangoz404/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cookie-0.18.1/src/same_site.rs /home/mangoz404/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cookie-0.18.1/src/expiration.rs /home/mangoz404/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cookie-0.18.1/src/prefix.rs
+
+/home/mangoz404/Documents/Projets/Shell/wai/target/debug/deps/libcookie-b74c1cdcbfdd29e4.rmeta: /home/mangoz404/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cookie-0.18.1/src/lib.rs /home/mangoz404/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cookie-0.18.1/src/builder.rs /home/mangoz404/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cookie-0.18.1/src/parse.rs /home/mangoz404/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cookie-0.18.1/src/jar.rs /home/mangoz404/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cookie-0.18.1/src/delta.rs /home/mangoz404/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cookie-0.18.1/src/same_site.rs /home/mangoz404/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cookie-0.18.1/src/expiration.rs /home/mangoz404/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cookie-0.18.1/src/prefix.rs
+
+/home/mangoz404/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cookie-0.18.1/src/lib.rs:
+/home/mangoz404/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cookie-0.18.1/src/builder.rs:
+/home/mangoz404/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cookie-0.18.1/src/parse.rs:
+/home/mangoz404/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cookie-0.18.1/src/jar.rs:
+/home/mangoz404/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cookie-0.18.1/src/delta.rs:
+/home/mangoz404/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cookie-0.18.1/src/same_site.rs:
+/home/mangoz404/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cookie-0.18.1/src/expiration.rs:
+/home/mangoz404/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cookie-0.18.1/src/prefix.rs:

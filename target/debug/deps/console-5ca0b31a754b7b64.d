@@ -1,0 +1,11 @@
+/home/mangoz404/Documents/Projets/Shell/wai/target/debug/deps/console-5ca0b31a754b7b64.d: /home/mangoz404/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/console-0.15.11/src/lib.rs /home/mangoz404/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/console-0.15.11/src/common_term.rs /home/mangoz404/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/console-0.15.11/src/kb.rs /home/mangoz404/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/console-0.15.11/src/term.rs /home/mangoz404/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/console-0.15.11/src/unix_term.rs /home/mangoz404/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/console-0.15.11/src/utils.rs /home/mangoz404/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/console-0.15.11/src/ansi.rs
+
+/home/mangoz404/Documents/Projets/Shell/wai/target/debug/deps/libconsole-5ca0b31a754b7b64.rmeta: /home/mangoz404/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/console-0.15.11/src/lib.rs /home/mangoz404/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/console-0.15.11/src/common_term.rs /home/mangoz404/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/console-0.15.11/src/kb.rs /home/mangoz404/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/console-0.15.11/src/term.rs /home/mangoz404/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/console-0.15.11/src/unix_term.rs /home/mangoz404/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/console-0.15.11/src/utils.rs /home/mangoz404/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/console-0.15.11/src/ansi.rs
+
+/home/mangoz404/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/console-0.15.11/src/lib.rs:
+/home/mangoz404/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/console-0.15.11/src/common_term.rs:
+/home/mangoz404/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/console-0.15.11/src/kb.rs:
+/home/mangoz404/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/console-0.15.11/src/term.rs:
+/home/mangoz404/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/console-0.15.11/src/unix_term.rs:
+/home/mangoz404/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/console-0.15.11/src/utils.rs:
+/home/mangoz404/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/console-0.15.11/src/ansi.rs:
