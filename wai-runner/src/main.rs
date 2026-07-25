@@ -78,6 +78,14 @@ fn main() {
                 None
             };
 
+            let reload_script = r#"
+                window.addEventListener('keydown', (event) => {
+                    if (event.key === 'F5' || (event.ctrlKey && event.key === 'r') || (event.metaKey && event.key === 'r')) {
+                        window.location.reload();
+                    }
+                });
+            "#;
+
             let mut builder = WebviewWindowBuilder::new(
                 app,
                 "main",
@@ -85,7 +93,8 @@ fn main() {
             )
             .title(&title)
             .inner_size(width, height)
-            .resizable(true);
+            .resizable(true)
+            .initialization_script(reload_script);
 
             // Apply data directory if set (provides isolation for WebKitGTK / WebView2)
             if let Some(ref path) = data_dir {
