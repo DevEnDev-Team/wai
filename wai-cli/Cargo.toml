@@ -3,6 +3,7 @@ name = "wai-cli"
 version = "0.1.0"
 edition = "2024"
 description = "Web App Installer for Linux - transform web apps into native desktop applications"
+license = "MIT"
 
 [dependencies]
 dialoguer = "0.10"
@@ -15,7 +16,6 @@ serde_json = "1.0"
 [package.metadata.deb]
 name = "wai"
 maintainer = "DevEnDev-Team <devendev.pro@gmail.com>"
-license = "MIT"
 assets = [
     ["../target/release/wai-cli", "usr/bin/wai", "755"],
     ["../target/release/wai-runner", "usr/bin/wai-runner", "755"]
