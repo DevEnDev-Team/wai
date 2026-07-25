@@ -36,11 +36,8 @@ jobs:
       - name: Rust Cache
         uses: swatinem/rust-cache@v2
 
-      - name: Install cargo-deb (pre-compiled binary)
-        run: |
-          wget https://github.com/mmstick/cargo-deb/releases/download/v2.10.0/cargo-deb_2.10.0_amd64.deb
-          sudo dpkg -i cargo-deb_2.10.0_amd64.deb
-          rm cargo-deb_2.10.0_amd64.deb
+      - name: Install cargo-deb
+        run: cargo install cargo-deb --locked
 
       - name: Build release binaries
         run: cargo build --release
