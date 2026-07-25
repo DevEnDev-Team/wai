@@ -31,33 +31,30 @@ Un script Bash interactif pour transformer vos applications web préférées en 
 
 ## 🔧 Prérequis
 
-### Dépendances obligatoires
-- **Google Chrome** ou **Chromium**
-- **wget** pour le téléchargement des icônes
-- **Accès sudo** pour l'installation système
+Le script gère automatiquement l'installation des dépendances si vous l'exécutez sur une base Debian/Ubuntu.
 
-### Installation des dépendances
+### Dépendances obligatoires (compilation de wai-runner)
+- **Rust & Cargo** pour compiler le binaire
+- **libwebkit2gtk-4.1-dev** et **libgtk-3-dev** (moteurs WebKit/GTK système)
+- **wget** pour le téléchargement des icônes
+- **Accès sudo** pour l'installation système des raccourcis et dépendances
+
+### Installation manuelle des dépendances (optionnelle)
 
 #### Ubuntu/Debian/Pop!_OS
 ```bash
 sudo apt update
-sudo apt install google-chrome-stable wget
-# Ou pour Chromium
-sudo apt install chromium-browser wget
+sudo apt install cargo rustc libsoup-3.0-dev libwebkit2gtk-4.1-dev libgtk-3-dev build-essential wget
 ```
 
 #### Fedora
 ```bash
-sudo dnf install google-chrome-stable wget
-# Ou pour Chromium
-sudo dnf install chromium wget
+sudo dnf install cargo rustc webkit2gtk4.1-devel gtk3-devel wget
 ```
 
 #### Arch Linux
 ```bash
-sudo pacman -S google-chrome wget
-# Ou pour Chromium
-sudo pacman -S chromium wget
+sudo pacman -S rust webkit2gtk-4.1 gtk3 wget
 ```
 
 ## 📥 Installation
@@ -140,25 +137,23 @@ Chaque application installée génère cette structure :
 
 ```
 /opt/AppName/
-├── appname.sh          # Script de lancement
+├── appname.sh          # Script de lancement (appelle wai-runner)
 └── appname.png         # Icône de l'application
 
 /usr/share/applications/
 └── appname.desktop     # Entrée du menu système (tous utilisateurs)
 
-~/.config/appname-profile/
-└── [Profil Chrome dédié]
+~/.local/share/com.devendev.wairunner/sessions/appname/
+└── [Données de session isolées du site web]
 ```
 
 ## ⚙️ Configuration technique
 
-### Paramètres Chrome
-Les applications sont lancées avec ces options :
-- `--app=URL` : Mode application
-- `--user-data-dir` : Profil isolé
-- `--disable-features=VizDisplayCompositor` : Optimisation
-- `--class` et `--name` : Identification de fenêtre
-- `--window-size=1200x800` : Taille par défaut
+### Paramètres de wai-runner
+Les applications s'exécutent avec `wai-runner` en utilisant les paramètres suivants :
+- `--url URL` : L'adresse URL de la webapp à charger.
+- `--title Titre` : Le titre affiché sur la fenêtre.
+- `--identifier ID` : Identifiant unique pour isoler le stockage (cookies, localStorage, cache).
 
 ### Catégories d'applications
 - **Trello** : `Office;ProjectManagement;Productivity;`

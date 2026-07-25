@@ -90,6 +90,108 @@ APPS[tux_category]="Utility;Office;"
 
 
 WINDOW_SIZE="1200x800"
+
+# Fonction pour compiler le runner Tauri (wai-runner) si nécessaire
+compile_wai_runner() {
+    local runner_bin="$HOME/.local/bin/wai-runner"
+    
+    if [ -f "$runner_bin" ]; then
+        return 0
+    fi
+    
+    print_header
+    echo -e "  ${SECONDARY}${BOLD}🛠️ COMPILATION DU RUNNER TAURI (WAI-RUNNER)${NC}"
+    echo -e "  ${MUTED}──────────────────────────────────────────────────────────────${NC}"
+    echo -e "  Le runner Tauri (wai-runner) est requis pour l'application."
+    echo -e "  Nous allons procéder à sa compilation."
+    echo
+    
+    # 1. Vérifier si Cargo/Rust est installé
+    if ! command -v cargo &> /dev/null; then
+        print_step "1" "3" "Installation de Rust / Cargo..."
+        echo -e "  ${WARNING}${ICON_WARN} Cargo/Rust n'est pas installé sur votre système.${NC}"
+        read -p "  Voulez-vous l'installer maintenant via apt ? (y/N) : " -n 1 -r REPLY
+        echo
+        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+            echo -e "  ${DANGER}${ICON_CROSS} Erreur : Rust est nécessaire pour compiler le runner.${NC}"
+            exit 1
+        fi
+        
+        sudo apt-get update && sudo apt-get install -y cargo rustc
+        if [ $? -ne 0 ]; then
+            print_error "Échec de l'installation de Rust/Cargo."
+            exit 1
+        fi
+        print_success "Rust et Cargo installés."
+    else
+        print_step "1" "3" "Rust et Cargo détectés."
+    fi
+    
+    # 2. Vérifier et installer les dépendances de compilation de Tauri (libsoup, webkit2gtk, etc.)
+    print_step "2" "3" "Vérification des dépendances système de compilation..."
+    local missing_libs=()
+    if ! pkg-config --exists javascriptcoregtk-4.1 2>/dev/null; then
+        missing_libs+=("libwebkit2gtk-4.1-dev")
+    fi
+    if ! pkg-config --exists gtk+-3.0 2>/dev/null; then
+        missing_libs+=("libgtk-3-dev")
+    fi
+    if ! pkg-config --exists libsoup-3.0 2>/dev/null; then
+        missing_libs+=("libsoup-3.0-dev")
+    fi
+    if ! pkg-config --exists openssl 2>/dev/null; then
+        missing_libs+=("libssl-dev")
+    fi
+    
+    if [ ${#missing_libs[@]} -ne 0 ]; then
+        echo -e "  ${WARNING}${ICON_WARN} Dépendances système de compilation manquantes : ${missing_libs[*]}${NC}"
+        read -p "  Voulez-vous installer les dépendances nécessaires avec sudo ? (y/N) : " -n 1 -r REPLY
+        echo
+        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+            echo -e "  ${DANGER}${ICON_CROSS} Erreur : Les dépendances de compilation sont requises.${NC}"
+            exit 1
+        fi
+        
+        sudo apt-get update && sudo apt-get install -y libsoup-3.0-dev libwebkit2gtk-4.1-dev libgtk-3-dev build-essential curl wget file libssl-dev libayatana-appindicator3-dev librsvg2-dev
+        if [ $? -ne 0 ]; then
+            print_error "Échec de l'installation des dépendances."
+            exit 1
+        fi
+        print_success "Dépendances système installées avec succès."
+    else
+        print_success "Toutes les dépendances système sont présentes."
+    fi
+    
+    # 3. Compilation
+    print_step "3" "3" "Compilation de wai-runner en cours (cela peut prendre quelques minutes)..."
+    
+    local script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    local build_dir="$script_dir/wai-runner"
+    
+    if [ ! -d "$build_dir" ]; then
+        print_error "Dossier source $build_dir introuvable."
+        exit 1
+    fi
+    
+    (
+        cd "$build_dir"
+        cargo build --release
+    )
+    
+    if [ $? -ne 0 ]; then
+        print_error "Échec de la compilation du binaire."
+        exit 1
+    fi
+    
+    mkdir -p "$HOME/.local/bin"
+    cp "$build_dir/target/release/wai-runner" "$runner_bin"
+    chmod +x "$runner_bin"
+    
+    print_success "Le runner Tauri a été compilé et installé dans $runner_bin."
+    echo
+    sleep 2
+}
+
 # Fonction d'installation
 install_app() {
     local app_key="$1"
@@ -104,7 +206,7 @@ install_app() {
     local script_path="$app_dir/${app_name_lower}.sh"
     local icon_path="$app_dir/${app_name_lower}.png"
     local desktop_file="/usr/share/applications/${app_name_lower}.desktop"
-    local profile_dir="$HOME/.config/${app_name_lower}-profile"
+    local profile_dir="$HOME/.local/share/com.devendev.wairunner/sessions/${app_name_lower}"
     
     # Nom d'affichage (avec espace si nécessaire)
     local display_name="$app_name"
@@ -161,10 +263,8 @@ install_app() {
             exit 1
         fi
     else
-        if ! command -v google-chrome &> /dev/null && ! command -v chromium-browser &> /dev/null; then
-            echo -e "  ${DANGER}${ICON_CROSS} Erreur : Google Chrome ou Chromium non trouvé.${NC}"
-            exit 1
-        fi
+        # Compiler wai-runner si nécessaire
+        compile_wai_runner
     fi
     
     if ! command -v wget &> /dev/null; then
@@ -246,12 +346,7 @@ install_app() {
     print_step "3" "5" "Création du script de lancement..."
 sudo tee "$script_path" > /dev/null <<EOF
 #!/bin/bash
-$chrome_cmd --app=$app_url \\
-  --user-data-dir="\$HOME/.config/${app_name_lower}-profile" \\
-  --disable-features=VizDisplayCompositor \\
-  --class="${app_name_lower}-app" \\
-  --name="$display_name" \\
-  --window-size=$WINDOW_SIZE
+exec "\$HOME/.local/bin/wai-runner" --url "$app_url" --title "$display_name" --identifier "$app_name_lower"
 EOF
     sudo chmod +x "$script_path"
     print_success "Script créé : $script_path"
@@ -312,7 +407,7 @@ uninstall_app_silent() {
         sudo rm -rf "/opt/$app_name" 2>/dev/null || true
         sudo rm "/usr/share/applications/${app_name_lower}.desktop" 2>/dev/null || true
         rm "$HOME/.local/share/applications/${app_name_lower}.desktop" 2>/dev/null || true
-        rm -rf "$HOME/.config/${app_name_lower}-profile" 2>/dev/null || true
+        rm -rf "$HOME/.local/share/com.devendev.wairunner/sessions/${app_name_lower}" 2>/dev/null || true
     fi
 }
 
@@ -325,7 +420,7 @@ uninstall_app() {
     local app_dir="/opt/$app_name"
     local desktop_file="/usr/share/applications/${app_name_lower}.desktop"
     local user_desktop_file="$HOME/.local/share/applications/${app_name_lower}.desktop"
-    local profile_dir="$HOME/.config/${app_name_lower}-profile"
+    local profile_dir="$HOME/.local/share/com.devendev.wairunner/sessions/${app_name_lower}"
     
     # Nom d'affichage
     local display_name="$app_name"
@@ -405,12 +500,12 @@ uninstall_app() {
             print_success "Aucun fichier utilisateur trouvé."
         fi
         
-        print_step "4" "5" "Suppression du profil Chrome..."
+        print_step "4" "5" "Suppression des données de session (cookies, cache)..."
         if [ -d "$profile_dir" ]; then
             rm -rf "$profile_dir"
-            print_success "Profil Chrome supprimé."
+            print_success "Données de session supprimées."
         else
-            print_success "Aucun profil Chrome trouvé."
+            print_success "Aucune donnée de session trouvée."
         fi
         
         print_step "5" "5" "Mise à jour du cache..."

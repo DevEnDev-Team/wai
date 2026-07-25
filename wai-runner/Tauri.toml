@@ -1,0 +1,9 @@
+product-name = "wai-runner"
+version = "0.1.0"
+identifier = "com.devendev.wairunner"
+
+[build]
+frontend-dist = "dist"
+
+[app]
+security = { csp = "default-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:;" }
