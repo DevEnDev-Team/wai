@@ -10,6 +10,9 @@ jobs:
     name: Build and Release
     runs-on: ubuntu-22.04 # Use 22.04 for maximum GLIBC backward compatibility on older Linux distros
 
+    permissions:
+      contents: write
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
